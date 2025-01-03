@@ -20,30 +20,75 @@
     <div>
       <button class="btn btn-success">進入遊戲</button>
     </div>
-    <div class="chatRoom">
-      <div class="chatTitle">
-        <button class="btn btn-primary">一般</button>
-        <button class="btn btn-primary">公會</button>
-        <button class="btn btn-primary">私聊</button>
-        <button class="btn btn-primary">系統</button>
+    <div class="chatBag">
+      <div class="chatRoom">
+        <div class="chatTitle">
+          <button class="btn btn-primary" @click="setActiveTab('一般')">一般</button>
+          <button class="btn btn-primary" @click="setActiveTab('公會')">公會</button>
+          <button class="btn btn-primary" @click="setActiveTab('私聊')">私聊</button>
+          <button class="btn btn-primary" @click="setActiveTab('系統')">系統</button>
+        </div>
       </div>
-    </div>
-    <div v-for="raw in raws" :key="raw.name">
-      {{ raw.msg }}
+      <div v-for="(msg, index) in activeMessages" :key="index">
+        {{ msg }}
+      </div>
+      <div class="inputArea">
+        <input v-model="newMessage" type="text" placeholder="輸入訊息" />
+        <button class="btn btn-primary" @click="addMessage">送出</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
-const raws = ref([
-  {name: '一般', msg: '一般訊息'},
-  {name: '公會', msg: '公會訊息'},
-  {name: '私聊', msg: '私聊訊息'},
-  {name: '系統', msg: '系統訊息'},
-])
+const generalMessages = ref(['一般訊息 1', '一般訊息 2'])
+const guildMessages = ref(['公會訊息 1', '公會訊息 2'])
+const privateMessages = ref(['私聊訊息 1', '私聊訊息 2'])
+const systemMessages = ref(['系統訊息 1', '系統訊息 2'])
+
+const activeTab = ref('一般')
+const newMessage = ref('')
+
+// 根據當前的 Tab 顯示對應的訊息
+const activeMessages = computed(() => {
+  switch (activeTab.value) {
+    case '公會':
+      return guildMessages.value
+    case '私聊':
+      return privateMessages.value
+    case '系統':
+      return systemMessages.value
+    default:
+      return generalMessages.value
+  }
+})
+
+// 設置當前活動的 Tab
+function setActiveTab(tab) {
+  activeTab.value = tab
+}
+
+// 將輸入的訊息新增到對應的陣列
+function addMessage() {
+  if (!newMessage.value.trim()) return
+  switch (activeTab.value) {
+    case '公會':
+      guildMessages.value.push(newMessage.value)
+      break
+    case '私聊':
+      privateMessages.value.push(newMessage.value)
+      break
+    case '系統':
+      systemMessages.value.push(newMessage.value)
+      break
+    default:
+      generalMessages.value.push(newMessage.value)
+  }
+  newMessage.value = '' // 清空輸入欄位
+}
 
 // 第一次連接
 onMounted(async () => {
@@ -87,20 +132,27 @@ onMounted(async () => {
     height: 100%;
   }
 }
-
-.chatRoom {
-  display: flex;
-  justify-content: center;
-  height: 100%;
+.chatBag{
   background-color: rgb(255, 230, 0);
-
-  .chatTitle{
+  .chatRoom {
     display: flex;
-    padding: 1rem;
-  }
+    justify-content: center;
+    height: 100%;
 
-  .chatBody{
-    height: 5rem;
+    .chatTitle{
+      display: flex;
+      padding: 1rem;
+    }
+
+    .chatBody{
+      height: 5rem;
+    }
   }
+}
+
+.inputArea {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
 </style>
