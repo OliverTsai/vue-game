@@ -8,6 +8,8 @@ import mHomeView from '@/views/m/mHomeView.vue';
 import About from '@/views/AboutView.vue';
 import mAbout from '@/views/m/AboutView.vue';
 
+import mGame from '@/views/m/gameView.vue'
+
 const routes = [
   // 電腦網頁
   {
@@ -19,6 +21,11 @@ const routes = [
     path: '/test',
     name: 'test',
     component: store.isMobile ? mAbout : About,
+  },
+  {
+    path: '/game',
+    name: 'game',
+    component: store.isMobile ? mGame : mGame,
   },
 
 ]

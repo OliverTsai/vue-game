@@ -1,46 +1,51 @@
 <template>
-  <div class="mbodyListBox p-3">
-    <div class="mbodyListRow">
-      <div class="mbodyListLeft"><img src="../../assets/logo3.png"></div>
-      <div class="mbodyListRight">Lv.50 10000000000000</div>
-    </div>
-    <div class="mbodyListRow">
-      <div class="mbodyListBox p-3">
-        <button class="btn btn-primary">公會</button>
-        <button class="btn btn-primary">好友</button>
-        <button class="btn btn-primary">儲值</button>
-      </div>
-      <div class="userImg"><img src="../../assets/user/user01.png"></div>
-      <div class="mbodyListBox p-3">
-        <button class="btn btn-primary">銀行</button>
-        <button class="btn btn-primary">衣櫃</button>
-        <button class="btn btn-primary">商店</button>
-      </div>
-    </div>
-    <div>
-      <button class="btn btn-success">進入遊戲</button>
-    </div>
-    <div class="chatBag">
-      <div class="chatRoom">
-        <div class="chatTitle">
-          <button class="btn btn-primary" @click="setActiveTab('一般')">一般</button>
-          <button class="btn btn-primary" @click="setActiveTab('公會')">公會</button>
-          <button class="btn btn-primary" @click="setActiveTab('私聊')">私聊</button>
-          <button class="btn btn-primary" @click="setActiveTab('系統')">系統</button>
+  <headView />
+  <div class="mBg">
+    <div class="mbodyListBox p-3">
+      <!-- <div class="mbodyListRow">
+        <div class="mbodyListLeft"><img src="../../assets/logo3.png"></div>
+        <div class="mbodyListRight">Lv.50 10000000000000</div>
+      </div> -->
+      <div class="mbodyListRow mt-3">
+        <div class="mbodyListBox p-3">
+          <button class="btn btn-primary" @click="buttonTXT('公會')">公會</button>
+          <button class="btn btn-primary" @click="buttonTXT('好友')">好友</button>
+          <button class="btn btn-primary" @click="buttonTXT('儲值')">儲值</button>
+        </div>
+        <div class="userImg"><img src="../../assets/user/user01.png"></div>
+        <div class="mbodyListBox p-3">
+          <button class="btn btn-primary" @click="buttonTXT('銀行')">銀行</button>
+          <button class="btn btn-primary" @click="buttonTXT('衣櫃')">衣櫃</button>
+          <button class="btn btn-primary" @click="buttonTXT('商店')">商店</button>
         </div>
       </div>
-      <div v-for="(msg, index) in activeMessages" :key="index">
-        {{ msg }}
+      <div>
+        <router-link to="/game"><button class="btn btn-success">進入遊戲</button></router-link>
       </div>
-      <div class="inputArea">
-        <input v-model="newMessage" type="text" placeholder="輸入訊息" />
-        <button class="btn btn-primary" @click="addMessage">送出</button>
+      <div class="chatBag">
+        <div class="chatRoom">
+          <div class="chatTitle">
+            <button class="btn btn-primary" @click="setActiveTab('一般')">一般</button>
+            <button class="btn btn-primary" @click="setActiveTab('公會')">公會</button>
+            <button class="btn btn-primary" @click="setActiveTab('私聊')">私聊</button>
+            <button class="btn btn-primary" @click="setActiveTab('系統')">系統</button>
+          </div>
+        </div>
+        <div v-for="(msg, index) in activeMessages" :key="index">
+          {{ msg }}
+        </div>
+        <div class="inputArea">
+          <input v-model="newMessage" type="text" placeholder="輸入訊息" />
+          <button class="btn btn-primary" @click="addMessage">送出</button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+
+import headView from '@/components/m/mHeadView.vue'
 
 import { ref, onMounted, computed } from 'vue'
 
@@ -71,6 +76,10 @@ function setActiveTab(tab) {
   activeTab.value = tab
 }
 
+function buttonTXT(TXT){
+  alert(TXT)
+}
+
 // 將輸入的訊息新增到對應的陣列
 function addMessage() {
   if (!newMessage.value.trim()) return
@@ -98,6 +107,16 @@ onMounted(async () => {
 </script>
 
 <style lang="scss">
+
+.mBg{
+  position: relative;
+  background-image: url('../../assets/bg.png');
+  background-size: cover; /* 背景自動縮放填滿 */
+  background-position: center; /* 背景居中 */
+  background-repeat: no-repeat; /* 背景不重複 */
+  width: 100%; /* 設置寬度 */
+  height: 100vh; /* 設置高度，覆蓋整個視窗 */
+}
 
 .mbodyListBox {
   display: flex;
@@ -133,7 +152,10 @@ onMounted(async () => {
   }
 }
 .chatBag{
-  background-color: rgb(255, 230, 0);
+  background-image: url('../../assets/chat-bg.png');
+  background-size: cover; /* 背景自動縮放填滿 */
+  background-position: center; /* 背景居中 */
+  background-repeat: no-repeat; /* 背景不重複 */
   .chatRoom {
     display: flex;
     justify-content: center;
